@@ -19,7 +19,7 @@ const getResponse = (params, mode) => {
   }
   return response
 }
-module.export = {
+module.exports = {
   successfulResponse: successfulResponse,
   failedResponse: failedResponse,
   getResponse: getResponse

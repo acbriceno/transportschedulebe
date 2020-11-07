@@ -8,6 +8,8 @@ const typeDefs = gql`
     name: String!
     id: ID!
     type: StopType!
+    location: String!
+    active: Boolean!
   }
 
   enum StopType {
@@ -19,41 +21,62 @@ const typeDefs = gql`
     id: ID!
     name: String!
     licenseNo: String!
+    scannedPasses: [String!]
   }
 
   type OperatorRoute {
     id: ID!
     route: Route!
-    departureTime: DateTime!
-    arrivalTime: DateTime!
-    type: RouteType!
+    schedule: [Schedule!]
+    routeType: RouteType!
     intermediaries: [Intermediary!]
+    operatorId: String!
+    active: Boolean!
 
   }
   
   input OperatorRouteInput{
-    route: String!
-    departureTime: DateTime!
-    arrivalTime: DateTime!
-    type: RouteType!
+    route: RouteInput!
+    schedule: [ScheduleInput!]
+    routeType: RouteType!
     intermediaries: [IntermediaryInput!]
     
   }
+  enum Day{
+    MONDAY
+    TUESDAY
+    WEDNESDAY
+    THURSDAY
+    FRIDAY
+    SATURDAY
+    SUNDAY
+  }
+
+  type Schedule{
+    day: Day!
+    departureTime: String!
+    arrivalTime: String!
+  }
+
+  input ScheduleInput{
+    day: Day!
+    departureTime: String!
+    arrivalTime: String!
+  }
 
   type Route {
-    id: ID!
-    startPos: Stop!
-    endPos: Stop!
+    startStopId: String!
+    endStopId: String!
     distance: Float!
   }
 
   type Intermediary{
-    pos: Stop!
+    stopId: String!
     time: DateTime!
   }
 
   input IntermediaryInput{
-    pos: String!
+    stopId: String!
     time: DateTime!
   }
 
@@ -65,39 +88,40 @@ const typeDefs = gql`
 
   type Pass {
     id: ID!
-    code: String!
+    mediaPath: String!
     value: Int!
     purchaseDate: DateTime!
-    route: ID!
-    type: RouteType!
+    redeemDate: DateTime!
+    route: Route!
+    routeType: RouteType!
     used: Boolean!
   }
 
   input PassInput {
     value: Int!
-    purchaseDate: DateTime!
-    route: ID!
-    type: RouteType!
+    route: RouteInput!
+    routeType: RouteType!
   }
 
   type Commuter {
     id: ID!
-    passes:[Pass!]
+    passes:[String!]
   }
 
-
+  input CommuterInput{
+    passes: [String!]
+  }
   input RouteInput {
-   startPos: StopInput!
-   endPos: StopInput!
-   departureTime: DateTime!
-   arrivalTime: DateTime!
-   type: RouteType!
+   startStopId: String!
+   endStopId: String!
   }
 
   input StopInput {
     lat: Float!
     lon: Float!
     name: String!
+    location: String!
+    type: StopType!
   }
 
   input OperatorInput{
@@ -117,37 +141,37 @@ const typeDefs = gql`
     routes: [Route!]
   }
 
-  type StopResponse{
+  type StopResponse implements Response{
     status: Boolean!
     code: String!
     stop: Stop
   }
 
-  type StopsResponse{
+  type StopsResponse implements Response{
     status: Boolean!
     code: String!
     stops: [Stop!]
   }
 
-  type OperatorRouteResponse{
+  type OperatorRouteResponse implements Response {
     status: Boolean!
     code: String!
     operatorRoute: OperatorRoute
   }
 
-  type OperatorRoutesResponse{
+  type OperatorRoutesResponse implements Response {
     status: Boolean!
     code: String!
     operatorRoutes: [OperatorRoute!]
   }
 
-  type OperatorResponse {
+  type OperatorResponse implements Response  {
     status: Boolean!
     code: String!
     operator: Operator
   }
 
-  type PassResponse {
+  type PassResponse  implements Response {
     status: Boolean!
     code: String!
     pass: Pass
@@ -159,7 +183,7 @@ const typeDefs = gql`
     passes: [Pass!]
   }
 
-  type CommuterResponse {
+  type CommuterResponse implements Response {
     status: Boolean!
     code: String!
     commuter: Commuter

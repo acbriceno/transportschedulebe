@@ -8,6 +8,8 @@ extend type Mutation {
     password: String!
   ): AuthData 
 
+  baseLogin(email: String!, password: String!): AuthData
+
   signup(
     user: UserInput,
     securityqa: [SecurityQAInput!]!

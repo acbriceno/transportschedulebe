@@ -5,15 +5,14 @@ const { gql } = require('apollo-server-express')
 const typeDefs = gql`
   
   extend type Query {
-  route(id: String!): Response!
-  routes: Response!
   stop(id: String!): Response!
   stops: Response!
   operatorRoute(id: String!): Response!
-  operatorRoutes: Response!
+  operatorRoutes: Response! @isOperator @isAuthenticated
+  activeOperatorRoutes: Response!
   pass(id: String!): Response!
-  passes: Response!
-  commuter: Response!
+  commuter: Response! @isCommuter @isAuthenticated
+  operator: Response! @isOperator @isAuthenticated
   }
 
 `

@@ -6,6 +6,7 @@ const validateEmail = require('./validateEmail')
 const twoFactorLogin = require('./twoFactorLogin')
 const createBareBonesUser = require('./createBareBonesUser')
 const completeBareBonesUser = require('./completeBareBonesUser')
+const baseLogin = require('./baseLogin')
 const resolvers = {
   Query: {
     me
@@ -17,7 +18,8 @@ const resolvers = {
     validateEmail,
     twoFactorLogin,
     createBareBonesUser,
-    completeBareBonesUser
+    completeBareBonesUser,
+    baseLogin
   }
 }
 

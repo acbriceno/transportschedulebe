@@ -2,6 +2,7 @@
 // const bcrypt = require('bcryptjs')
 // const Role = require('../../../models/Role')
 const Secure = require('../../../utils/secure')
+const DBGQLConnector = require('../../../utils/DBGQLConnector')
 const signup = async (parent, args, context, info) => {
   try {
     // Todo: Must add logic to signup for [Patient, doctor...,] then user account
@@ -105,11 +106,14 @@ const signup = async (parent, args, context, info) => {
     userArguments.securityqaId = securityqas.ops[0]._id
     userArguments.encryptedDataKeys = encryptedDataKeys
     userArguments.twoFactorAuth.code = null
-    const userObjDBPayload = await context.datasource().users.createObjDBPayload(userArguments)// user object  for db storage
-    const user = await context.datasource().users.create(userObjDBPayload)
-    const userObjGQLPayload = await context.datasource().users.createObjGQLPayload(user.ops[0])
-    console.log(userObjGQLPayload)
-    return userObjGQLPayload
+  i//  const userObjDBPayload = await context.datasource().users.createObjDBPayload(userArguments)// user object  for db storage
+   // const user = await context.datasource().users.create(userObjDBPayload)
+   // const userObjGQLPayload = await context.datasource().users.createObjGQLPayload(user.ops[0])
+  //  console.log(userObjGQLPayload)
+   // return userObjGQLPayload
+ 
+    let createdUser = await DBGQLConnector.createDBObj("USER", userArguments, context)
+    return createdUser
   } catch (error) {
     console.error(error)
   }

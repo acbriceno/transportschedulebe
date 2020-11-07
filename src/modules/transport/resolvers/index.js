@@ -1,13 +1,50 @@
 'use strict'
-const createRoute = require('./createRoute')
-const route = require('./route')
+const createStop = require('./createStop')
+const createOperator = require('./createOperator')
+const createOperatorRoute = require('./createOperatorRoute')
+const createCommuter = require('./createCommuter')
+const createPass = require('./createPass')
+
+const Stop = require('./stop')
+let stop = Stop.stop
+let stops = Stop.stops
+
+
+const OperatorRoute = require('./operatorRoute')
+let operatorRoute = OperatorRoute.operatorRoute
+let operatorRoutes = OperatorRoute.operatorRoutes
+let activeOperatorRoutes = OperatorRoute.activeOperatorRoutes
+
+const Pass = require('./pass')
+let scanPass = Pass.scanPass
+let pass = Pass.pass
+
+const Operator = require('./operator')
+let operator = Operator.operator
+
+const Commuter = require('./commuter')
+let commuter = Commuter.commuter
+
+
 const resolvers = {
   Query: {
-    route
+    stop,
+    stops,
+    operatorRoute,
+    operatorRoutes,
+    activeOperatorRoutes,
+    operator,
+    commuter,
+    pass
   },
 
   Mutation: {
-    createRoute
+    createStop,
+    createOperatorRoute,
+    createOperator,
+    createCommuter, 
+    createPass,
+    scanPass
   },
 
   RouteResponse : {
