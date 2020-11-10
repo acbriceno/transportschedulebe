@@ -106,7 +106,7 @@ const signup = async (parent, args, context, info) => {
     userArguments.securityqaId = securityqas.ops[0]._id
     userArguments.encryptedDataKeys = encryptedDataKeys
     userArguments.twoFactorAuth.code = null
-  i//  const userObjDBPayload = await context.datasource().users.createObjDBPayload(userArguments)// user object  for db storage
+  //  const userObjDBPayload = await context.datasource().users.createObjDBPayload(userArguments)// user object  for db storage
    // const user = await context.datasource().users.create(userObjDBPayload)
    // const userObjGQLPayload = await context.datasource().users.createObjGQLPayload(user.ops[0])
   //  console.log(userObjGQLPayload)

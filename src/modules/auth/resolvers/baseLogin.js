@@ -11,6 +11,7 @@ const ObjectID = require('mongodb').ObjectID
 const baseLogin = async (parent, args, context, info) => {
   try {
     console.log('Inside Login')
+    console.log(args)
     const data = {
       email: args.email
     }
@@ -25,11 +26,14 @@ const baseLogin = async (parent, args, context, info) => {
       throw new AuthenticationError('Incorrect Credentials')
     }
 
-    const token = await tokenUtil.create(user.user._id, true, config.JWT_LIFE_TIME_TWO)
+    const token = await tokenUtil.create(user._id, true, config.JWT_LIFE_TIME_TWO)
     return {
       user: {
-        id: user.user._id,
-        complete: user.user.complete
+        id: user._id,
+        complete: user.complete,
+        role: user.role,
+        firstName: user.firstName, 
+        lastName: user.lastName
       },
       token,
       tokenExpiration: config.JWT_LIFE_TIME_TWO
