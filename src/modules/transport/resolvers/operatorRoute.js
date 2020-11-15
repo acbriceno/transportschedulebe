@@ -5,8 +5,10 @@ const operatorRoute = async(parent, args, context, info)=>{
   try{
     const transportManager = new TransportManager()
     let operatorRouteResponse = await transportManager.getOperatorRoute(args.id, context)
-    return operatorRouteResponse.status ?  Response.getResponse(new Map([['operatorRoute', operatorRouteResponse.operatorRoute ]]), true) : Response.getResponse(new Map([['operatorRoute', null]]), false)
-
+    const operatorRouteRes = operatorRouteResponse.status ? new Response(operatorRouteResponse.operatorRoute, true, "operatorRoute") : new Response(null, false, "operatorRoute")
+    const operatorRouteReturn = await operatorRouteRes.getResponse()
+    return operatorRouteReturn
+    
 
     
   }catch(error){
@@ -22,10 +24,9 @@ const operatorRoutes = async(parent, args, context, info)=>{
     }
     const transportManager = new TransportManager()
     let operatorRoutesResponse = await transportManager.getOperatorRoutes(user.user.role.id[0], context)
-    return operatorRoutesResponse.status ?  Response.getResponse(new Map([['operatorRoutes', operatorRoutesResponse.operatorRoute ]]), true) : Response.getResponse(new Map([['operatorRoutes', []]]), false)
-
-
-    
+    const operatorRoutesRes = operatorRoutesResponse.status ? new Response(operatorRoutesResponse.operatorRoutes, true, "operatorRoutes") : new Response([], false, "operatorRoutes")
+    const operatorRoutesReturn = await operatorRoutesRes.getResponse()
+    return operatorRoutesReturn    
   }catch(error){
     console.error(error)
   }
@@ -35,10 +36,9 @@ const activeOperatorRoutes = async(parent, args, context, info)=>{
   try{
     const transportManager = new TransportManager()
     let operatorRoutesResponse = await transportManager.getActiveOperatorRoutes(context)
-    return operatorRoutesResponse.status ?  Response.getResponse(new Map([['operatorRoutes', operatorRoutesResponse.operatorRoutes ]]), true) : Response.getResponse(new Map([['operatorRoutes', []]]), false)
-
-
-    
+    const operatorRoutesRes = operatorRoutesResponse.status ? new Response(operatorRoutesResponse.operatorRoutes, true, "operatorRoutes") : new Response([], false, "operatorRoutes")
+    const operatorRoutesReturn = await operatorRoutesRes.getResponse()
+    return operatorRoutesReturn     
   }catch(error){
     console.error(error)
   }

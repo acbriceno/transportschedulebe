@@ -1,26 +1,35 @@
-'use strict'
 
-const success = true
-const failure = false
-const defaultCode = '0'
-const successfulResponse = {
-  status: success,
-  code: defaultCode
-}
-
-const failedResponse = {
-  status: failure,
-  code: defaultCode
-}
-const getResponse = (params, mode) => {
-  const response = (mode) ? successfulResponse : failedResponse
-  for (var [param, value] of params) {
-    response[param] = value
+class Response {
+  constructor(param, mode, name){
+    this.param = param
+    this.mode = mode
+    this.code = 0
+    this.name = name
   }
-  return response
+
+  async getResponse(){
+  try{
+    let params = new Map([[this.name, this.param]])
+    const response = this.getStructure()
+    for (var [param, value] of params) {
+     response[param] = value
+    }
+    return response
+    }catch(e){
+      console.error(e)
+  }
+
+  }
+  getStructure() {
+    return {
+      status: this.mode,
+      code: 0
+    }
+  }
+  getParam(){ return this.param }
+  getMode() { return this.mode }
+
+
 }
-module.exports = {
-  successfulResponse: successfulResponse,
-  failedResponse: failedResponse,
-  getResponse: getResponse
-}
+
+module.exports = Response

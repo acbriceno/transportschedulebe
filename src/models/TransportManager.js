@@ -41,6 +41,7 @@ class TransportManager {
 
   async getStops(context){
     try{
+      console.log("getting stops")
       let param = "active"
       let stops = await DBGQLConnector.dbFindAllWithTag(this.stopModel, param, true, context)
       if(stops == null){return {status: false}}
@@ -75,6 +76,7 @@ class TransportManager {
   async createOperator(args, context){
     try{
       let operator = await DBGQLConnector.createDBObj(this.operatorModel, args, context)
+      console.log(operator)
       if(operator == null){return {status: false}}
       return {
         status: true, 

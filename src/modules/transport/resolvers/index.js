@@ -5,6 +5,8 @@ const createOperatorRoute = require('./createOperatorRoute')
 const createCommuter = require('./createCommuter')
 const createPass = require('./createPass')
 
+const createBareOperator = require('./createBareOperator')
+
 const Stop = require('./stop')
 let stop = Stop.stop
 let stops = Stop.stops
@@ -44,7 +46,8 @@ const resolvers = {
     createOperator,
     createCommuter, 
     createPass,
-    scanPass
+    scanPass,
+    createBareOperator
   },
 
   RouteResponse : {
@@ -97,6 +100,12 @@ const resolvers = {
   CommuterResponse : {
     __isTypeOf:(obj, context, info) => {
       if(Object.prototype.hasOwnProperty.call(obj, 'commuter')){ return 'CommuterResponse'}
+    }
+  },
+
+  BareOperatorResponse : {
+    __isTypeOf:(obj, context, info) => {
+      if(Object.prototype.hasOwnProperty.call(obj, 'operatorRole')){ return 'BareOperatorResponse'}
     }
   }
 

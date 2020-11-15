@@ -45,7 +45,7 @@ const dbUpdateOne = async function(model, docMatchProperty, docMatchData, update
 const dbFindWithTag = async function (model, param, content, context) {
   try {
     const payload = {}
-    payload[param] = content.toString()
+    payload[param] = content
     console.log(payload)
     const modelCollectionID = ModelConnection[model]
     const modelDB = await context.datasource()[ModelConnection.properties[modelCollectionID].collection].find(payload)
@@ -66,17 +66,14 @@ const dbFindWithTag = async function (model, param, content, context) {
 const dbFindAllWithTag = async function (model, param, content, context) {
   try {
     const payload = {}
-    payload[param] = content.toString()
-    console.log(payload)
+    payload[param] = content
     const modelCollectionID = ModelConnection[model]
     const modelDB = await context.datasource()[ModelConnection.properties[modelCollectionID].collection].find(payload)
     // const modelDB = await context.datasource().hcorganizations.find(payload)
-    console.log(modelDB)
     if (modelDB.length > 0) {
 
     const modelGQLPayload = await modelDB.map(function (modelType) { return context.datasource()[ModelConnection.properties[modelCollectionID].collection].createObjGQLPayload(modelType) })
 
-      console.log(modelGQLPayload)
       return modelGQLPayload
     }
     return null
@@ -91,8 +88,10 @@ const createDBObj = async function (model, payload, context) {
   const modelCollectionID = ModelConnection[model]
   const modelPayload = await context.datasource()[ModelConnection.properties[modelCollectionID].collection].createObjDBPayload(payload)
   const modelDB = await context.datasource()[ModelConnection.properties[modelCollectionID].collection].create(modelPayload)
+  console.log(modelDB)
   if (modelDB.insertedCount > 0) {
     const modelGQLPayload = await context.datasource()[ModelConnection.properties[modelCollectionID].collection].createObjGQLPayload(modelDB.ops[0])
+    console.log(modelGQLPayload)
     return modelGQLPayload
   }
   return null

@@ -27,6 +27,7 @@ class Operator extends MongoDataSource {
       licenseNo: args.licenseNo,
       scannedPasses: args.scannedPasses
     }
+    return operator
   }
   
 }

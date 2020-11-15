@@ -5,10 +5,11 @@ const createOperatorRoute = async(parent, args, context, info)=>{
   try{
     const transportManager = new TransportManager()
     let operatorRouteResponse = await transportManager.createOperatorRoute(args.operatorRoute, context)
+    const operatorRouteRes = operatorRouteResponse.status ? new Response(operatorRouteResponse.operatorRoute, true, "operatorRoute") : new Response(null, false, "operatorRoute")
+    const operatorRouteReturn = await operatorRouteRes.getResponse()
+    return operatorRouteReturn
 
-
-    return operatorRouteResponse.status ?  Response.getResponse(new Map([['operatorRoute', operatorRouteResponse.operator ]]), true) : Response.getResponse(new Map([['operatorRoute', null]]), false)
-
+   
     
   }catch(error){
     console.error(error)

@@ -189,6 +189,12 @@ const typeDefs = gql`
     commuter: Commuter
   }
 
+  type BareOperatorResponse implements Response {
+  status: Boolean!
+  code: String!
+  operatorRole: String
+  }
+
   
 
 

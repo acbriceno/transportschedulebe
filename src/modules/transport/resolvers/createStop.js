@@ -7,8 +7,9 @@ const createStop = async(parent, args, context, info)=>{
   try{
     const transportManager = new TransportManager()
     let stopResponse = await transportManager.createStop(args.stop, context)
-    return stopResponse.status ?  Response.getResponse(new Map([['stop', stopResponse.stop ]]), true) : Response.getResponse(new Map([['stop', null]]), false)
-
+    let stopRes = stopResponse.status ?  new Response(stopResponse.stop, stopResponse.status, "stop") : new Response(null, stopResponse.status, "stop")
+    let responseReturn =  stopRes.getResponse()
+    return responseReturn
 
     
   }catch(error){

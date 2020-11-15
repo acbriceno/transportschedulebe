@@ -7,8 +7,9 @@ const pass = async(parent, args, context, info)=>{
 
     const transportManager = new TransportManager()
     let passResponse = await transportManager.getPass(args.id, context)
-
-    return passResponse.status ?  Response.getResponse(new Map([['pass', passResponse.pass ]]), true) : Response.getResponse(new Map([['pass', null]]), false)
+    let passRes = passResponse.status ? new Response(passResponse.pass, true, "pass") : new Response(null, false, "pass")
+    const passReturn = passRes.getResponse()
+    return passReturn
     
   }catch(error){
     console.error(error)
@@ -22,8 +23,9 @@ const scanPass = async(parent, args, context, info)=> {
     if(user.user === null){ return Response.getResponse(new Map([['pass', null]]), false) }
     const transportManager = new TransportManager()
     let scannedPassResponse = await transportManager.scanPass(args.passId, user.user.role.id[0], context)
-    return scannedPassResponse.status ?  Response.getResponse(new Map([['pass', null ]]), true) : Response.getResponse(new Map([['pass', null]]), false)
-    
+    const scannedPassRes = scannedPassResponse.status ? new Response(null, true, "pass") : new Response(null, false, "pass")
+    const scannedPassReturn = await scannedPassRes.getResponse()
+    return scannedPassReturn
 
   }catch(error){
     console.error(error)

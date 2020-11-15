@@ -8,7 +8,8 @@ extend type Mutation {
   createOperatorRoute(operatorRoute: OperatorRouteInput!): Response! @isOperator @isAuthenticated
   createPass(pass: PassInput!): Response! @isCommuter @isAuthenticated
   createCommuter(commuter: CommuterInput!): Response! @isCommuter @isAuthenticated
-  scanPass(passId: String!): Response @isOperator @isAuthenticated 
+  scanPass(passId: String!): Response @isOperator @isAuthenticated
+  createBareOperator(user: BareBonesUserInput!, operator: OperatorInput!): Response! @isAdmin @isAuthenticated
 }
 `
 

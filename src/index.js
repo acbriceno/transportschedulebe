@@ -11,7 +11,7 @@ const express = require('express')
 
 // will be used for testing to use supertest which needs app object
 const { ApolloServer } = require('apollo-server-express')
-
+const cors = require('cors')
 const context = require('./utils/context')
 const schema = require('./modules')
 const models = require('./models')
@@ -48,9 +48,26 @@ const startServer = async function () {
 
     const app = express()
 
+   
+const whitelist = [
+    // Allow domains here
+    'http://localhost:3000',
+    'http://192.168.2.212:3000'
+];
+const corsOptions = {
+    origin(origin, callback){
+        const originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+        callback(null, originIsWhitelisted);
+    },
+    credentials: true
+};
+    app.use(cors(corsOptions))
+
+
     server.applyMiddleware({
       path: '/',
-      app
+      app,
+      cors: false
     })
 
     await Promise.all([
