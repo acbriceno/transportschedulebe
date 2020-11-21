@@ -67,17 +67,17 @@ const typeDefs = gql`
   type Route {
     startStopId: String!
     endStopId: String!
-    distance: Float!
+    distance: Float
   }
 
   type Intermediary{
     stopId: String!
-    time: DateTime!
+    time: String!
   }
 
   input IntermediaryInput{
     stopId: String!
-    time: DateTime!
+    time: String!
   }
 
   enum RouteType {
@@ -94,7 +94,7 @@ const typeDefs = gql`
     redeemDate: DateTime!
     route: Route!
     routeType: RouteType!
-    used: Boolean!
+    redeemed: Boolean!
   }
 
   input PassInput {

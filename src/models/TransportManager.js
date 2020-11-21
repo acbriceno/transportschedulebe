@@ -2,6 +2,8 @@
 
 const DBGQLConnector = require('../utils/DBGQLConnector')
 const ScannableCodeGenerator = require('../utils/ScannableCodeGenerator')
+const Secure = require('./../utils/secure')
+
 const ObjectID = require('mongodb').ObjectID
 class TransportManager {
   constructor(){
@@ -243,13 +245,16 @@ class TransportManager {
       let pass = await DBGQLConnector.createDBObj(this.passModel, args, context)
       if(pass == null){return {status: false}}
       let scan = new ScannableCodeGenerator("png")
-      let passMedia = await scan.generateCode(pass.id)
+      //let passMedia = await scan.generateCode(pass.id)
+      let passMedia = await Secure.generateScannableCodeWP(pass.id.toString())
+      console.log(passMedia)
       let mediaPathUpdate = {
         mediaPath: passMedia
       }
+      console.log(mediaPathUpdate)
       let mediaUpdate = await this.updatePass(pass.id, mediaPathUpdate, context)
       let payload = {
-        docMatch: ObjectID(commuterId),
+        docMatch: ObjectID(args.roleId.toString()),
         updateContent: {
           passes: pass.id.toString()
         }
@@ -302,7 +307,7 @@ class TransportManager {
 
   async getPass(id, context){
     try{
-    let pass = await DBGQLConnector.dbFindWithTag(this.passModel,this.dbId, id, context)
+    let pass = await DBGQLConnector.dbFindWithTag(this.passModel,this.dbId, ObjectID(id), context)
     if(pass == null){return {status: false}}
     return {
       status: true, 
@@ -312,6 +317,8 @@ class TransportManager {
       console.error(error)
     }
   }
+
+
 
   async updatePass(passId, passUpdate, context ){
     try{

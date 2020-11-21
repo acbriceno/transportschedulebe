@@ -4,11 +4,13 @@ const TransportManager = require('../../../models/TransportManager')
 const Response = require('../../../utils/Response')
 const pass = async(parent, args, context, info)=>{
   try{
-
+    console.log(args)
     const transportManager = new TransportManager()
     let passResponse = await transportManager.getPass(args.id, context)
+    console.log(passResponse)
     let passRes = passResponse.status ? new Response(passResponse.pass, true, "pass") : new Response(null, false, "pass")
-    const passReturn = passRes.getResponse()
+    const passReturn = await passRes.getResponse()
+    console.log(passReturn)
     return passReturn
     
   }catch(error){

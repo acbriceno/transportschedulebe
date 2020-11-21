@@ -19,7 +19,7 @@ class OperatorRoute extends MongoDataSource{
       routeType: args.routeType,
       intermediaries: args.intermediaries,
       operatorId: args.operatorId,
-      active: false
+      active: true
     }
     return operatorRoute
   }

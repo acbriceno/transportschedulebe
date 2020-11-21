@@ -62,8 +62,8 @@ const corsOptions = {
     credentials: true
 };
     app.use(cors(corsOptions))
-
-
+    app.use('/static', express.static('src/utils/scannableMedia'))
+    //app.use('/static', express.static(path.join(__dirname, 'src/utils/scannableMedia')))
     server.applyMiddleware({
       path: '/',
       app,

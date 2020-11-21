@@ -1,4 +1,5 @@
 const { randomBytes, createCipheriv, createDecipheriv, createHash } = require('crypto')
+const ScannableCodeGenerator = require('./ScannableCodeGenerator')
 const workerpool = require('workerpool')
 
 //* **************************************************************************
@@ -128,10 +129,18 @@ const generateEncryptedDataKeys = async function (primary, secondary) {
   return encryptedDataKeys
 }
 
+
+const generateScannableCode = async function (code){
+  let scan = new ScannableCodeGenerator("png")
+  let media = await scan.generateCode(code)
+  return media
+}
+
 workerpool.worker({
   secureObject: secureObject,
   encrypt256: encrypt256CTR,
   decrypt256: decrypt256CTR,
   generateKey: generateKey,
-  generateEncryptedDataKeys: generateEncryptedDataKeys
+  generateEncryptedDataKeys: generateEncryptedDataKeys,
+  generateScannableCode: generateScannableCode
 })

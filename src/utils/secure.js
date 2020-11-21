@@ -139,6 +139,22 @@ const generateEncryptedDataKeysWP = async function (primary, secondary) {
   })
 }
 
+
+const generateScannableCodeWP = async function (code) {
+  return new Promise((resolve, reject) => {
+    securePool.exec('generateScannableCode', [code])
+      .then(function (result) {
+        resolve(result)
+      })
+      .catch(function (error) {
+        reject(error)
+      })
+      .then(function () {
+        securePool.terminate()
+      })
+  })
+}
+
 module.exports = {
   secureObjectWP,
   hashWP,
@@ -146,5 +162,6 @@ module.exports = {
   encrypt256WP,
   decrypt256WP,
   generateKeyWP,
-  generateEncryptedDataKeysWP
+  generateEncryptedDataKeysWP, 
+  generateScannableCodeWP
 }
