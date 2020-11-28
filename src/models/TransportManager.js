@@ -278,28 +278,57 @@ class TransportManager {
     }
   }
 
-  async scanPass(passId, scannedBy, context){
+  async scanPass(passId, operatorRouteId, scanningStopId, scannedBy, context){
     try{
       let pass = await this.getPass(passId, context)
       if(pass.status === false){return {status: false, redeemed: null}}
       if(pass.pass.redeemed == true){ return {status: false, redeemed: true}}
-      let redeemedUpdate = {
+      let control = false
+      let operatorRoute = await this.getOperatorRoute(ObjectID(operatorRouteId), context)
+      console.log(operatorRoute.operatorRoute)
+      console.log(pass.pass)
+      if(operatorRoute.status){
+       
+          if((pass.pass.route.startStopId.valueOf() === scanningStopId.valueOf() ) &&(pass.pass.route.endStopId.valueOf() === operatorRoute.operatorRoute.route.endStopId.valueOf()) && (pass.pass.routeType === operatorRoute.operatorRoute.routeType)){
+            control = true
+            console.log("Pass matched")
+          }else{
+            for(const intermediary of operatorRoute.operatorRoute.intermediaries){
+              if((pass.pass.route.startStopId === scanningStopId) && (pass.pass.route.endStopId === intermediary.stopId)&& (pass.pass.routeType === operatorRoute.operatorRoute.routeType)){
+                control = true
+                console.log("Pass matched")
+
+                break
+              }
+            }
+          }
+      }
+      if(control){
+        let redeemedUpdate = {
         redeemed: true,
         redeemDate: Date.now()
       }
-      let scanUpdate = await this.updatePass(passId, redeemedUpdate, context )
+      let scanUpdate = await this.updatePass(ObjectID(passId.toString()), redeemedUpdate, context )
       let payload = {
-        docMatch: ObjectID(scannedBy),
+        docMatch: ObjectID(scannedBy.toString()),
         updateContent: {
           scannedPasses: passId
         }
       }
       let operatorPassUpdate = await DBGQLConnector.dbUpdateOneArray(this.operatorModel, payload, context)
+      let affectedPass = await this.getPass(passId, context)
       return {
-        status: scanUpdate.status,
-        redeemed: true
+        status: affectedPass.status,
+        pass: affectedPass.pass
       }
-    }catch(error){
+
+
+      }
+      return {
+        status: false, 
+        redeemed: false
+      }
+          }catch(error){
       console.error(error)
     }
 

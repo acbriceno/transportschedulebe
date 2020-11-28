@@ -24,9 +24,10 @@ const scanPass = async(parent, args, context, info)=> {
     const user = context.user
     if(user.user === null){ return Response.getResponse(new Map([['pass', null]]), false) }
     const transportManager = new TransportManager()
-    let scannedPassResponse = await transportManager.scanPass(args.passId, user.user.role.id[0], context)
-    const scannedPassRes = scannedPassResponse.status ? new Response(null, true, "pass") : new Response(null, false, "pass")
+    let scannedPassResponse = await transportManager.scanPass(args.passId,args.operatorRouteId, args.scanningStopId, user.user.role.id[0], context)
+    const scannedPassRes = scannedPassResponse.status ? new Response(scannedPassResponse.pass, true, "pass") : new Response(null, false, "pass")
     const scannedPassReturn = await scannedPassRes.getResponse()
+    console.log(scannedPassReturn)
     return scannedPassReturn
 
   }catch(error){
